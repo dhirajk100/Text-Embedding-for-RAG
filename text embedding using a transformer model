@@ -1,0 +1,22 @@
+Generating text embedding using a transformer model
+from transformers import AutoTokenizer, AutoModel
+import torch
+
+# Load pre-trained BERT model and tokenizer
+tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
+model = AutoModel.from_pretrained('bert-base-uncased')
+
+# Text input
+text = "What is the capital of France?"
+
+# Tokenize the input and convert to tensor
+inputs = tokenizer(text, return_tensors="pt")
+
+# Generate embeddings vector representation
+with torch.no_grad():
+    outputs = model(**inputs)
+
+# Take the first token's output as the sentence embedding
+embedding = outputs.last_hidden_state[:, 0, :]
+
+print(embedding.shape)
